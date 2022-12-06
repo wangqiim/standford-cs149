@@ -5,9 +5,11 @@ ispc-v1.18.1-linux*
 
 # compile
 *.o
+objs
 
 # ass1
+*.ppm
 mandelbrot
 myexp
-*.ppm
-mandelbrot_ispc*
+mandelbrot_ispc
+sqrt
