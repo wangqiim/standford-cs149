@@ -10,3 +10,4 @@ ispc-v1.18.1-linux*
 mandelbrot
 myexp
 *.ppm
+mandelbrot_ispc*
