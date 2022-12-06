@@ -249,7 +249,44 @@ void clampedExpVector(float* values, int* exponents, float* output, int N) {
   // Your solution should work for any value of
   // N and VECTOR_WIDTH, not just when VECTOR_WIDTH divides N
   //
+  __cs149_mask mask_ones = _cs149_init_ones();
+  __cs149_mask mask_zeros = _cs149_mask_not(mask_ones);
+  __cs149_vec_int v_int_zeros = _cs149_vset_int(0);
+  __cs149_vec_int v_int_ones = _cs149_vset_int(1);
   
+  for (int i = 0; i < N; i += VECTOR_WIDTH) {
+    // 初始化v_output
+    int offset = i;
+    if (offset + VECTOR_WIDTH > N) {
+      // 中间有一部分数据重叠，二次计算
+      offset = N - VECTOR_WIDTH;
+    }
+    __cs149_vec_float v_values;
+    _cs149_vload_float(v_values, values + offset, mask_ones);
+    __cs149_vec_float v_output = _cs149_vset_float(1);
+    __cs149_vec_int v_exponents;
+    _cs149_vload_int(v_exponents, exponents + offset, mask_ones);
+    
+    // 初始化mask
+    __cs149_mask mask_operation;
+    _cs149_veq_int(mask_operation, v_exponents, v_int_zeros, mask_ones);
+    mask_operation = _cs149_mask_not(mask_operation);
+    
+    // 循环乘
+    while (_cs149_cntbits(mask_operation)) {
+      _cs149_vmult_float(v_output, v_output, v_values, mask_operation);
+      _cs149_vsub_int(v_exponents, v_exponents, v_int_ones, mask_operation);
+      _cs149_veq_int(mask_operation, v_exponents, v_int_zeros, mask_ones);
+      mask_operation = _cs149_mask_not(mask_operation);
+    }
+    // clamp value to 9.999
+    __cs149_vec_float v_clamp = _cs149_vset_float(9.999999f);
+    __cs149_mask is_clamp;
+    _cs149_vgt_float(is_clamp, v_output, v_clamp, mask_ones);
+    _cs149_vmove_float(v_output, v_clamp, is_clamp);
+    // construct output
+    _cs149_vstore_float(output + offset, v_output, mask_ones);
+  }
 }
 
 // returns the sum of all elements in values
