@@ -13,3 +13,5 @@ mandelbrot
 myexp
 mandelbrot_ispc
 sqrt
+saxpy
+kmeans
