@@ -1,0 +1,11 @@
+settings.json
+
+# ispc: https://ispc.github.io/downloads.html
+ispc-v1.18.1-linux*
+
+# compile
+*.o
+
+# ass1
+mandelbrot
+*.ppm
