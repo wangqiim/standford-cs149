@@ -15,3 +15,10 @@ mandelbrot_ispc
 sqrt
 saxpy
 kmeans
+# asst4
+pr
+pr_grader
+graphTools
+all_graphs.tgz
+*.graph
+*.bin
