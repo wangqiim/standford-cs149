@@ -13,7 +13,7 @@ ARCH=$(shell uname | sed -e 's/-.*//g')
 
 OBJDIR=objs
 CXX=g++ -m64
-CXXFLAGS=-O3 -Wall
+CXXFLAGS=-O3 -Wall --std=c++11
 ifeq ($(ARCH), Darwin)
 # Building on mac
 LDFLAGS=-L/usr/local/depot/cuda-8.0/lib/ -lcudart
@@ -22,7 +22,7 @@ else
 LDFLAGS=-L/usr/local/cuda/lib64/ -lcudart
 endif
 NVCC=nvcc
-NVCCFLAGS=-O3 -m64 --gpu-architecture compute_35
+NVCCFLAGS=-O3 -m64 --gpu-architecture compute_35 --std=c++11
 
 
 OBJS=$(OBJDIR)/main.o  $(OBJDIR)/saxpy.o
